@@ -1,3 +1,11 @@
 #! /usr/bin/env bash
 
+if [[ $# != 1 ]]
+then
+  echo "Usage: $(basename $0) <overlay>"
+  echo ""
+  echo "Apply the given overlay for the current kubectl context."
+  exit 1
+fi
+
 kubectl apply -k k8s/$(kubectx -c)/$1 | grep -v unchanged

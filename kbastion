@@ -1,5 +1,16 @@
 #! /usr/bin/env bash
 
+if [[ "$@" == "-h" ]]
+then
+  echo "Usage: "
+	echo "    $(basename $0)"
+	echo "    $(basename $0) <command>"
+	echo "    $(basename $0) -c"
+  echo ""
+  echo "Run a command in the bastion. The naked invocation will start a bash shell. The -c option will print the bastion pod name so it can be used in other commands, like \`kubectl cp <source> \$(kbastion -c):<dest>\`."
+  exit 1
+fi
+
 pod=$(kubectl get pod -l app=bastion --no-headers=true -o name | cut -d '/' -f 2)
 
 if [ "$1" == "-c" ]
