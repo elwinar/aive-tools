@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+kubectl apply -k k8s/$(kubectx -c)/$1 | grep -v unchanged

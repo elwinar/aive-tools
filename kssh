@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+
+app=$1
+shift
+
+args=$@
+if [ "$args" == "" ]
+then
+	args="bash"
+fi
+
+kubectl exec -it $(kubectl get pod -l app=$app --no-headers=true -o name | head -n 1) -- $args

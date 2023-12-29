@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+kubectl get configMap/$1 -o json | jq '.data | to_entries[] | "export "+.key+"=\""+.value+"\""' -r

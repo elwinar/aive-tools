@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+kubectl diff -k k8s/$(kubectx -c)/$1

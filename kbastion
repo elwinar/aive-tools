@@ -1,0 +1,17 @@
+#! /usr/bin/env bash
+
+pod=$(kubectl get pod -l app=bastion --no-headers=true -o name | cut -d '/' -f 2)
+
+if [ "$1" == "-c" ]
+then
+	echo $pod
+	exit
+fi
+
+args=$@
+if [ "$args" == "" ]
+then
+	args="bash"
+fi
+
+kubectl exec -it pod/$pod -- $args
