@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+
+commitish=$1
+
+if [ "$commitish" == "" ]
+then
+	committish="HEAD"
+fi
+
+git tag --points-at $commitish | xargs -I TAG git push origin TAG
