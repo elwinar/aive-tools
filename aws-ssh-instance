@@ -6,14 +6,20 @@ instanceName="$1"
 spinner="/-\|"
 
 # Identify the instance itself.
-echo "looking for instance $instanceName"
-instanceId=$(aws ec2 describe-instances | jq ".Reservations[].Instances[] | {InstanceId, Name: .Tags[] | select(.Key==\"Name\").Value} | select(.Name==\"$instanceName\").InstanceId" -r)
+if [[ "$instanceName" =~ ^i-.* ]]
+then
+	instanceId="$instanceName"
+else
+	echo "looking for instance $instanceName"
+	instanceId=$(aws ec2 describe-instances | jq ".Reservations[].Instances[] | {InstanceId, Name: .Tags[] | select(.Key==\"Name\").Value} | select(.Name==\"$instanceName\").InstanceId" -r)
+fi
 
 if [ -z "$instanceId" ]
 then
 	echo "instance $instanceName not found"
 	exit
 fi
+echo "found instance $instanceId"
 
 # Start the instance if necessary, then wait for the instance to be running.
 initialState=$(aws ec2 describe-instance-status --instance-ids "$instanceId" | jq '.InstanceStatuses[0].InstanceState.Name' -r)
