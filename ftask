@@ -1,0 +1,16 @@
+#! /bin/bash
+
+if [[ $# != 2 ]]
+then
+  echo "Usage: $(basename $0) <video_id> <task>"
+  echo "Example: $(basename $0) abcde video-shot-detection"
+  echo ""
+  echo "Fetch the latest valid analysis task result for the given viden and task"
+  exit 1
+fi
+
+kctx=`kubectl config current-context`
+bucket=aive-$kctx
+id=`echo $1 | tr -d '-'`
+task=`aws --profile $kctx s3 ls s3://$bucket/videos/$id/analysis/tasks/$2 | tr '.json' ".json\n" | tail -1 | cut -c 32-`
+aws --profile $kctx s3 cp s3://$bucket/videos/$id/analysis/tasks/$task -
