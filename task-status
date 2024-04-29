@@ -9,4 +9,10 @@ then
 fi
 
 kubectl exec -it `kubectl get pod -l app=bastion --no-headers=true -o name | cut -d '/' -f 2` -- \
-  psql video -c "select t.* from analysis_task t join stream s on t.stream_id = s.id where video_id = '$1' order by executed_at";
+  psql video -c "
+    select s.video_id, t.*
+    from analysis_task t
+    join stream s on t.stream_id = s.id
+    where video_id = '$1'
+    order by t.stream_id, executed_at
+  ";
