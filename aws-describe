@@ -1,0 +1,5 @@
+#! /usr/bin/bash
+
+AWS_PROFILE="tooling"
+
+aws ec2 describe-instances | jq ".Reservations[].Instances[] | select((.Tags | from_entries).Name == \"$1\")"
