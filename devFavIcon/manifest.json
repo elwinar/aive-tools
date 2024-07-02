@@ -1,0 +1,16 @@
+{
+	"manifest_version": 3,
+	"name": "Aive Favicons",
+	"version": "1.0",
+	"description": "Add a colored stripe to the Aive favicons depending on the environment to help differenciate them.",
+	"content_scripts": [
+		{
+			"js": ["main.js"],
+			"matches": ["<all_urls>"]
+		}
+	],
+	"background": {
+		"service_worker": "background.js"
+	},
+	"permissions": ["tabs"]
+}
