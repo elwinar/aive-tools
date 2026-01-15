@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+
+if [[ $# != 2 ]]
+then
+  echo "Usage: $(basename $0) <configmap>"
+  echo ""
+  echo "Convert a configmap to a sourceable string."
+  exit 1
+fi
+
+kubectl get configMap/$1 -o json | jq '.data | to_entries[] | "export "+.key+"=\""+.value+"\""' -r
